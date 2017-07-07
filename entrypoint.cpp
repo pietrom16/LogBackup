@@ -53,9 +53,23 @@ void PrintHelp()
 	    << "\n"
 	    << "Copyright (C) 2017 Pietro Mele\n"
 	    << "Released under a GPL 3 license.\n"
-	    << "Web site: ";	//+TODO
+	    << "Web site:  https://github.com/pietrom16" << std::endl;
 
 	//+TODO - Print description
+	std::cout << "\n"
+	             "Utility to move a file appending it to another file.\n"
+	             "\n"
+	             "Used to move logs from one disk to another, typically from a RAM-disk to a hard disk.\n"
+				 "\n"
+				 "Once launched, it runs in the background.\n"
+				 "\n"
+				 "* Syntax:\n"
+				 "\n"
+				 "	 `logbkp --source SRC --dest DEST --interval TIME_INT --maxsize MAX_SIZE`\n"
+				 "	 `       --config CONFIG_FILE`\n"
+				 "\n"
+				 "	 `logbkp -s SRC -d DEST -i TIME_INT -m MAX_SIZE -c CONFIG_FILE`\n"
+				 ;
 
 	std::cout << std::endl;
 }
