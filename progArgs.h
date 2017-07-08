@@ -55,7 +55,9 @@ public:
 	int  GetArg(int _i, Argument&) const;
 	
 	int  GetValue(const std::string &_tag, std::string &_val) const;
-	
+	int  GetValue(const std::string &_tag, int &_val) const;
+	int  GetValue(const std::string &_tag, double &_val) const;
+
 	// Form multiple values associated to the same name
 	//	n is zero based.
 	int  GetValue(const std::string &_tag, std::string &_val, int _n) const;

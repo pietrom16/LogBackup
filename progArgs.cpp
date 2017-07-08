@@ -203,18 +203,49 @@ int ProgArgs::GetArg(int _i, Argument &_arg) const
 }
 
 
-int ProgArgs::GetValue(const string &_tag, string &_val) const
+int ProgArgs::GetValue(const std::string &_tag, std::string &_val) const
 {
-	for(int i = 0; i < args.size(); ++i)
+	for(size_t i = 0; i < args.size(); ++i)
 	{
 		if(_tag == args[i].tag) {
 			_val = args[i].val;
-			return i;
+			return int(i);
 		}
 	}
 
 	return  -1;
 }
+
+
+int ProgArgs::GetValue(const std::string &_tag, int &_val) const
+{
+	for(size_t i = 0; i < args.size(); ++i)
+	{
+		if(_tag == args[i].tag) {
+			_val = std::atoi(args[i].val.c_str());
+			return int(i);
+		}
+	}
+
+	return  -1;
+}
+
+
+int ProgArgs::GetValue(const std::string &_tag, double &_val) const
+{
+	for(size_t i = 0; i < args.size(); ++i)
+	{
+		if(_tag == args[i].tag) {
+			_val = std::atof(args[i].val.c_str());
+			return int(i);
+		}
+	}
+
+	return  -1;
+}
+
+
+
 
 
 // Get the n-th value, in case of multiple equal tags
@@ -242,7 +273,7 @@ int ProgArgs::GetValue(const std::string& _tag, std::string& _val, int _n) const
 }
 
 
-bool ProgArgs::GetValue(const string &_tag) const
+bool ProgArgs::GetValue(const std::string &_tag) const
 {
 	for (int i = 0; i < args.size(); ++i)
 	{
