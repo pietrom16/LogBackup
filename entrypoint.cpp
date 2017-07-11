@@ -21,38 +21,18 @@ struct CmdLineParams
 
 
 void PrintHelp();
+int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[]);
+
+
+int GetJsonParams(CmdLineParams &clp) {
+	return -1; //+TODO
+}
 
 
 int main(int argc, char* argv[])
 {
-	/// Command line parameters
-	{
-		ProgArgs            arguments;
-		ProgArgs::Argument  arg;
-
-		arg.Set("--source", "-s", "path of the source file on a temporary device", false, true, "test.txt");
-		arguments.AddArg(arg);
-		arg.Set("--dest", "-d", "path of the destination file on a permanent device", false, true, "test2.txt");
-		arguments.AddArg(arg);
-		arg.Set("--interval", "-i", "time interval between checks (in seconds)", true, true, "1.0");
-		arguments.AddArg(arg);
-		arg.Set("--maxsize", "-m", "source file size that triggers the move (in KB)", true, true, "8");
-		arguments.AddArg(arg);
-		arg.Set("--config", "-c", "configuration file (JSON format) with parameters that can change during the run", true, false);
-		arguments.AddArg(arg);
-		arg.Set("--help", "-h", "this help message");
-		arguments.AddArg(arg);
-
-		arguments.Parse(argc, argv);		// load and parse the parameters passed by the user
-
-		std::string value;
-
-		if(arguments.GetValue("--help")) {
-			PrintHelp();
-			arguments.Help();
-			exit(0);
-		}
-	}
+	CmdLineParams clp;
+	ReadCommandLineParams(clp, argc, argv);
 
 
 	return 0;
@@ -68,7 +48,6 @@ void PrintHelp()
 	    << "Released under a GPL 3 license.\n"
 	    << "Web site:  https://github.com/pietrom16" << std::endl;
 
-	//+TODO - Print description
 	std::cout << "\n"
 	             "Utility to move a file appending it to another file.\n"
 	             "\n"
@@ -86,3 +65,50 @@ void PrintHelp()
 
 	std::cout << std::endl;
 }
+
+
+/// Read command line parameters
+
+int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[])
+{
+	ProgArgs            arguments;
+	ProgArgs::Argument  arg;
+
+	arg.Set("--source", "-s", "path of the source file on a temporary device", false, true, "test.txt");
+	arguments.AddArg(arg);
+	arg.Set("--dest", "-d", "path of the destination file on a permanent device", false, true, "test2.txt");
+	arguments.AddArg(arg);
+	arg.Set("--interval", "-i", "time interval between checks (in seconds)", true, true, std::to_string(clp.interval));
+	arguments.AddArg(arg);
+	arg.Set("--maxsize", "-m", "source file size that triggers the move (in KB)", true, true, std::to_string((clp.maxSize)));
+	arguments.AddArg(arg);
+	arg.Set("--config", "-c", "configuration file (JSON format) with parameters that can change during the run", true, false);
+	arguments.AddArg(arg);
+	arg.Set("--help", "-h", "this help message");
+	arguments.AddArg(arg);
+
+	arguments.Parse(argc, argv);		// load and parse the parameters passed by the user
+
+	std::string value;
+
+	if(arguments.GetValue("--help")) {
+		PrintHelp();
+		arguments.Help();
+		exit(0);
+	}
+
+	if(arguments.GetValue("--config")) {
+		bool r = arguments.GetValue("--config", clp.configFile);
+		if(r == true)
+			GetJsonParams(clp);
+	}
+
+	arguments.GetValue("--source", clp.source);
+	arguments.GetValue("--dest", clp.dest);
+	arguments.GetValue("--interval", clp.interval);
+	arguments.GetValue("--maxsize", clp.maxSize);
+
+	return 0;
+}
+
+
