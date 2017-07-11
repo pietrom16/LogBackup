@@ -52,10 +52,12 @@ public:
 	
 	int  Parse(int _argc, char *_argv[]);
 	
-	int  GetArg(int _i, Argument&) const;
+	int  GetArg(size_t _i, Argument&) const;
 	
 	int  GetValue(const std::string &_tag, std::string &_val) const;
 	int  GetValue(const std::string &_tag, int &_val) const;
+	int  GetValue(const std::string &_tag, size_t &_val) const;
+	int  GetValue(const std::string &_tag, float &_val) const;
 	int  GetValue(const std::string &_tag, double &_val) const;
 
 	// Form multiple values associated to the same name

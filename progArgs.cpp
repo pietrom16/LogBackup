@@ -143,7 +143,7 @@ int ProgArgs::Parse(int _argc, char *_argv[])
 	int i = 1;
 	while(i < _argc)
 	{
-		for(int j = 0; j < args.size(); ++j)
+		for(size_t j = 0; j < args.size(); ++j)
 		{
 			if(args[j].tag == _argv[i] || args[j].shortTag == _argv[i])
 			{
@@ -192,9 +192,9 @@ int ProgArgs::Parse(int _argc, char *_argv[])
 }
 
 
-int ProgArgs::GetArg(int _i, Argument &_arg) const
+int ProgArgs::GetArg(size_t _i, Argument &_arg) const
 {
-	if(_i < 0 || _i >= args.size())
+	if(_i >= args.size())
 		return -1;
 
 	_arg = args[_i];
@@ -222,7 +222,35 @@ int ProgArgs::GetValue(const std::string &_tag, int &_val) const
 	for(size_t i = 0; i < args.size(); ++i)
 	{
 		if(_tag == args[i].tag) {
-			_val = std::atoi(args[i].val.c_str());
+			_val = std::stoi(args[i].val);
+			return int(i);
+		}
+	}
+
+	return  -1;
+}
+
+
+int ProgArgs::GetValue(const std::string &_tag, size_t &_val) const
+{
+	for(size_t i = 0; i < args.size(); ++i)
+	{
+		if(_tag == args[i].tag) {
+			_val = std::stoul(args[i].val);
+			return int(i);
+		}
+	}
+
+	return  -1;
+}
+
+
+int ProgArgs::GetValue(const std::string &_tag, float &_val) const
+{
+	for(size_t i = 0; i < args.size(); ++i)
+	{
+		if(_tag == args[i].tag) {
+			_val = std::stof(args[i].val);
 			return int(i);
 		}
 	}
@@ -236,7 +264,7 @@ int ProgArgs::GetValue(const std::string &_tag, double &_val) const
 	for(size_t i = 0; i < args.size(); ++i)
 	{
 		if(_tag == args[i].tag) {
-			_val = std::atof(args[i].val.c_str());
+			_val = std::stod(args[i].val);
 			return int(i);
 		}
 	}
@@ -255,7 +283,7 @@ int ProgArgs::GetValue(const std::string& _tag, std::string& _val, int _n) const
 {
 	int id = 0;
 
-	for(int i = 0; i < args.size(); ++i)
+	for(size_t i = 0; i < args.size(); ++i)
 	{
 		if(_tag == args[i].tag)
 		{
@@ -275,7 +303,7 @@ int ProgArgs::GetValue(const std::string& _tag, std::string& _val, int _n) const
 
 bool ProgArgs::GetValue(const std::string &_tag) const
 {
-	for (int i = 0; i < args.size(); ++i)
+	for(size_t i = 0; i < args.size(); ++i)
 	{
 		if(_tag == args[i].tag)  {
 			if(args[i].present)
@@ -293,7 +321,7 @@ void ProgArgs::Print() const
 {
 	cout << endl;
 
-	for(int j = 0; j < args.size(); ++j)
+	for(size_t j = 0; j < args.size(); ++j)
 	{
 		args[j].Print();
 	}
@@ -302,7 +330,7 @@ void ProgArgs::Print() const
 
 void ProgArgs::Help() const
 {
-	for(int j = 0; j < args.size(); ++j)
+	for(size_t j = 0; j < args.size(); ++j)
 	{
 		args[j].Help();
 	}
