@@ -2,8 +2,10 @@
   */
 
 #include "progArgs.h"
+#include <fstream>
 #include <iostream>
 #include <string>
+#include <thread>
 
 using namespace Utilities;
 
@@ -22,11 +24,7 @@ struct CmdLineParams
 
 void PrintHelp();
 int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[]);
-
-
-int GetJsonParams(CmdLineParams &clp) {
-	return -1; //+TODO
-}
+int GetJsonParams(CmdLineParams &clp);  //+TODO
 
 
 int main(int argc, char* argv[])
@@ -34,6 +32,23 @@ int main(int argc, char* argv[])
 	CmdLineParams clp;
 	ReadCommandLineParams(clp, argc, argv);
 
+	std::ifstream ifs(clp.source);
+	std::ofstream ofs(clp.dest, std::ios_base::app | std::ios_base::out);
+
+	while(!ifs.is_open()) {
+		// Wait for input file to be available
+		//+TODO
+	}
+
+	while(true)
+	{
+		ofs << ifs.rdbuf();
+		//+TODO - Flush
+		//+TODO - Delete ifs
+		//+TODO - Configure pause
+		//+TODO - Check for exit conditions
+		std::this_thread::sleep_for(1);	//+TODO
+	}
 
 	return 0;
 }
