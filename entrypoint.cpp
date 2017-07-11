@@ -7,6 +7,19 @@
 
 using namespace Utilities;
 
+
+/// Command line parameters
+
+struct CmdLineParams
+{
+	std::string source,
+	            dest;
+	std::string configFile;
+	float       interval = 1.0f;	// seconds
+	size_t      maxSize  = 16;		// KB
+};
+
+
 void PrintHelp();
 
 
