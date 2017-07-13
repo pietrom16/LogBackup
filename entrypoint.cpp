@@ -2,11 +2,13 @@
   */
 
 #include "progArgs.h"
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <thread>
 
+using namespace std::chrono;
 using namespace Utilities;
 
 
@@ -14,17 +16,17 @@ using namespace Utilities;
 
 struct CmdLineParams
 {
-	std::string source,
-	            dest;
-	std::string configFile;
-	float       interval = 1.0f;	// seconds
-	size_t      maxSize  = 16;		// KB
+	std::string   source,
+	              dest;
+	std::string   configFile;
+	milliseconds  interval   = milliseconds(1000);
+	size_t        maxSizeKB  = 16;
 };
 
 
 void PrintHelp();
 int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[]);
-int GetJsonParams(CmdLineParams &clp);  //+TODO
+int GetJsonParams(CmdLineParams &clp) { return -1; } //+TODO
 
 
 int main(int argc, char* argv[])
@@ -47,7 +49,7 @@ int main(int argc, char* argv[])
 		//+TODO - Delete ifs
 		//+TODO - Configure pause
 		//+TODO - Check for exit conditions
-		std::this_thread::sleep_for(1);	//+TODO
+		std::this_thread::sleep_for(clp.interval);
 	}
 
 	return 0;
@@ -93,9 +95,9 @@ int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[])
 	arguments.AddArg(arg);
 	arg.Set("--dest", "-d", "path of the destination file on a permanent device", false, true, "test2.txt");
 	arguments.AddArg(arg);
-	arg.Set("--interval", "-i", "time interval between checks (in seconds)", true, true, std::to_string(clp.interval));
+	arg.Set("--interval", "-i", "time interval between checks (in seconds)", true, true, std::to_string(clp.interval.count()));
 	arguments.AddArg(arg);
-	arg.Set("--maxsize", "-m", "source file size that triggers the move (in KB)", true, true, std::to_string((clp.maxSize)));
+	arg.Set("--maxsize", "-m", "source file size that triggers the move (in KB)", true, true, std::to_string((clp.maxSizeKB)));
 	arguments.AddArg(arg);
 	arg.Set("--config", "-c", "configuration file (JSON format) with parameters that can change during the run", true, false);
 	arguments.AddArg(arg);
@@ -120,8 +122,10 @@ int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[])
 
 	arguments.GetValue("--source", clp.source);
 	arguments.GetValue("--dest", clp.dest);
-	arguments.GetValue("--interval", clp.interval);
-	arguments.GetValue("--maxsize", clp.maxSize);
+	int interval;
+	arguments.GetValue("--interval", interval);
+	clp.interval = std::chrono::milliseconds(1000*interval);
+	arguments.GetValue("--maxsize", clp.maxSizeKB);
 
 	return 0;
 }
