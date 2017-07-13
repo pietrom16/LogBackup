@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
 	while(!ifs.is_open()) {
 		// Wait for input file to be available
-		//+TODO
+		std::this_thread::sleep_for(clp.interval);
 	}
 
 	while(true)
