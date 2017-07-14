@@ -91,9 +91,9 @@ int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[])
 	ProgArgs            arguments;
 	ProgArgs::Argument  arg;
 
-	arg.Set("--source", "-s", "path of the source file on a temporary device", false, true, "test.txt");
+	arg.Set("--source", "-s", "path of the source file on a temporary device", false, true, "test0.txt");
 	arguments.AddArg(arg);
-	arg.Set("--dest", "-d", "path of the destination file on a permanent device", false, true, "test2.txt");
+	arg.Set("--dest", "-d", "path of the destination file on a permanent device", false, true, "test.txt");
 	arguments.AddArg(arg);
 	arg.Set("--interval", "-i", "time interval between checks (in seconds)", true, true, std::to_string(clp.interval.count()));
 	arguments.AddArg(arg);
