@@ -37,18 +37,17 @@ int main(int argc, char* argv[])
 	std::ifstream ifs(clp.source);
 	std::ofstream ofs(clp.dest, std::ios_base::app | std::ios_base::out);
 
-	while(!ifs.is_open()) {
-		// Wait for input file to be available
-		std::this_thread::sleep_for(clp.interval);
-		ifs.open(clp.source);
-	}
-
 	while(true)
 	{
-		ofs << ifs.rdbuf();
-		//+TODO - Flush
-		//+TODO - Delete ifs
-		//+TODO - Configure pause
+		while(!ifs.is_open()) {
+			// Wait for input file to be available
+			std::this_thread::sleep_for(clp.interval);
+			ifs.open(clp.source);
+		}
+
+		ofs << ifs.rdbuf() << std::flush;
+		//+TODO - Delete/empty ifs
+		//+TODO - If changed, reload JSON parameters
 		//+TODO - Check for exit conditions
 		std::this_thread::sleep_for(clp.interval);
 	}
