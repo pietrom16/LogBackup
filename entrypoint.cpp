@@ -8,12 +8,12 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <experimental/filesystem>
+#include <experimental/filesystem>		//+T
 
 using namespace std::chrono;
 using namespace Utilities;
 //+TODO namespace fs = std::filesystem;
-namespace fs = std::experimental::filesystem;
+namespace fs = std::experimental::filesystem;		//+T
 
 
 /// Command line parameters
