@@ -1,7 +1,7 @@
 /** entrypoint.cpp
   */
 
-#include "ProgArgs.h"
+#include "progArgs.h"
 #include <chrono>
 //+TODO #include <filesystem>
 #include <fstream>
