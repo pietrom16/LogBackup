@@ -1,6 +1,10 @@
 /** entrypoint.cpp
   */
 
+/** TODO
+	- Update compiler (C++17 needed)
+  */
+
 #include "progArgs.h"
 #include <chrono>
 //+TODO #include <filesystem>
