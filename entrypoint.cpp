@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 		//+TODO-C++17 fs::resize_file(clp.source, 0); ifs.seekg(0);
 		std::remove(clp.source.c_str());
 
+		//+TODO - During the pause, check the size of ifs is within limits, otherwise flush it.
 		//+TODO - If changed, reload JSON parameters
 		//+TODO - Check for exit conditions
 
