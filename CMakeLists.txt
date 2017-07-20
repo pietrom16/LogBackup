@@ -14,6 +14,6 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 add_executable(${PROJECT_NAME}
 	"entrypoint.cpp"
-	"ProgArgs.cpp"
-	"ProgArgs.h"
+	"progArgs.cpp"
+	"progArgs.h"
 	)
