@@ -7,17 +7,17 @@
 
 #include "progArgs.h"
 #include <chrono>
-//+TODO #include <filesystem>
+//+C++17 //+TODO #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <thread>
-#include <experimental/filesystem>		//+T
+//+C++17 //+TODO #include <experimental/filesystem>		//+T
 
 using namespace std::chrono;
 using namespace Utilities;
-//+TODO namespace fs = std::filesystem;
-namespace fs = std::experimental::filesystem;		//+T
+//+C++17 //+TODO namespace fs = std::filesystem;
+//+C++17 //+TODO namespace fs = std::experimental::filesystem;		//+T
 
 
 /// Command line parameters
@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 		ofs << ifs.rdbuf() << std::flush;
 
 		// Truncate input file to 0, i.e. delete it
-		fs::resize_file(clp.source, 0);
+		//+C++17 fs::resize_file(clp.source, 0);
 		ifs.seekg(0);
 
 		//+TODO - If changed, reload JSON parameters
