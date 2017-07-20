@@ -41,6 +41,9 @@ int main(int argc, char* argv[])
 	CmdLineParams clp;
 	ReadCommandLineParams(clp, argc, argv);
 
+	int           nSubIntervals = 10;
+	milliseconds  subInterval = clp.interval/nSubIntervals;
+
 	std::ifstream ifs(clp.source);
 	std::ofstream ofs(clp.dest, std::ios_base::app | std::ios_base::out);
 
@@ -58,11 +61,19 @@ int main(int argc, char* argv[])
 		//+TODO-C++17 fs::resize_file(clp.source, 0); ifs.seekg(0);
 		std::remove(clp.source.c_str());
 
-		//+TODO - During the pause, check the size of ifs is within limits, otherwise flush it.
 		//+TODO - If changed, reload JSON parameters
 		//+TODO - Check for exit conditions
 
-		std::this_thread::sleep_for(clp.interval);
+		for(int i = 0; i <= nSubIntervals; ++i)
+		{
+			//+TODO - During the pause, check the size of ifs is within limits, otherwise flush it.
+			std::this_thread::sleep_for(subInterval);
+			//+TODO-C++17
+			//if(fs::file_size(clp.source) > clp.maxSizeKB) {
+			//	ofs << ifs.rdbuf() << std::flush;
+			//	std::remove(clp.source.c_str());
+			//}
+		}
 	}
 
 	return 0;
