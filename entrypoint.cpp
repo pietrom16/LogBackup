@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
 	int           nSubIntervals = 10;
 	milliseconds  subInterval = clp.interval/nSubIntervals;
 
+	//+TODO - Load JSON parameters
+
 	std::ifstream ifs(clp.source);
 	std::ofstream ofs(clp.dest, std::ios_base::app | std::ios_base::out);
 
@@ -66,9 +68,8 @@ int main(int argc, char* argv[])
 
 		for(int i = 0; i <= nSubIntervals; ++i)
 		{
-			//+TODO - During the pause, check the size of ifs is within limits, otherwise flush it.
 			std::this_thread::sleep_for(subInterval);
-			//+TODO-C++17
+			//+TODO-C++17 - If the size of ifs is beyond the limit, flush it.
 			//if(fs::file_size(clp.source) > clp.maxSizeKB) {
 			//	ofs << ifs.rdbuf() << std::flush;
 			//	std::remove(clp.source.c_str());
