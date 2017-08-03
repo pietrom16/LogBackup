@@ -28,6 +28,7 @@ struct CmdLineParams
 	std::string   configFile;
 	milliseconds  interval   = milliseconds(1000);
 	size_t        maxSizeKB  = 16;
+	bool          autoFlush  = true;	// flush `dest` at every iteration
 };
 
 
@@ -57,7 +58,10 @@ int main(int argc, char* argv[])
 			ifs.open(clp.source);
 		}
 
-		ofs << ifs.rdbuf() << std::flush;
+		ofs << ifs.rdbuf();
+
+		if(clp.autoFlush)
+			ofs << std::flush;
 
 		// Truncate input file to 0, i.e. delete it
 		//+TODO-C++17 fs::resize_file(clp.source, 0); ifs.seekg(0);
@@ -99,10 +103,10 @@ void PrintHelp()
 				 "\n"
 				 "* Syntax:\n"
 				 "\n"
-				 "	 `logbkp --source SRC --dest DEST --interval TIME_INT --maxsize MAX_SIZE`\n"
-				 "	 `       --config CONFIG_FILE`\n"
+				 "	 `logbkp --source SRC --dest DEST [--interval TIME_INT] [--maxsize MAX_SIZE]`\n"
+				 "	 `       [--config CONFIG_FILE] [--noautoflush]`\n"
 				 "\n"
-				 "	 `logbkp -s SRC -d DEST -i TIME_INT -m MAX_SIZE -c CONFIG_FILE`\n"
+				 "	 `logbkp -s SRC -d DEST [-i TIME_INT] [-m MAX_SIZE] [-c CONFIG_FILE] [-nf]`\n"
 				 ;
 
 	std::cout << std::endl;
@@ -125,6 +129,8 @@ int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[])
 	arg.Set("--maxsize", "-m", "source file size that triggers the move (in KB)", true, true, std::to_string((clp.maxSizeKB)));
 	arguments.AddArg(arg);
 	arg.Set("--config", "-c", "configuration file (JSON format) with parameters that can change during the run", true, false);
+	arguments.AddArg(arg);
+	arg.Set("--noautoflush", "-nf", "do not automatically flush the destination file", true, false);
 	arguments.AddArg(arg);
 	arg.Set("--help", "-h", "this help message");
 	arguments.AddArg(arg);
@@ -151,6 +157,10 @@ int ReadCommandLineParams(CmdLineParams &clp, int argc, char* argv[])
 	arguments.GetValue("--interval", interval);
 	clp.interval = std::chrono::milliseconds(1000*interval);
 	arguments.GetValue("--maxsize", clp.maxSizeKB);
+
+	if(arguments.GetValue("--noautoflush")) {
+		clp.autoFlush = false;
+	}
 
 	return 0;
 }
