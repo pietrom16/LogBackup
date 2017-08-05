@@ -43,7 +43,7 @@ int ProgArgs::Argument::Set(
 
 	valueNeeded = _needed;
 	present = false;
-	return  0;
+	return 0;
 }
 
 

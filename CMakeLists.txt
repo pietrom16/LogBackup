@@ -1,19 +1,23 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8)
 
 project(LogBackup)
 
 #set_target_properties(${PROJECT_NAME} PROPERTIES
-#	CXX_STANDARD 11
+#	CXX_STANDARD 17
 #	CXX_STANDARD_REQUIRED ON
-#	CXX_EXTENSIONS OFF
 #)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS ON)
+
+
+add_library(stdc++fs UNKNOWN IMPORTED)
+#set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/7/libstdc++fs.a")
 
 add_executable(${PROJECT_NAME}
 	"entrypoint.cpp"
 	"progArgs.cpp"
 	"progArgs.h"
 	)
+
+target_link_libraries(${PROJECT_NAME} stdc++fs)

@@ -9,14 +9,16 @@
 #include <chrono>
 #include <cstdio>
 //+TODO-C++17 #include <filesystem>
+#include <experimental/filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <thread>
 
 using namespace std::chrono;
-using namespace Utilities;
 //+TODO-C++17 namespace fs = std::filesystem;
+namespace fs = std::experimental::filesystem;
+using namespace Utilities;
 
 
 /// Command line parameters
@@ -73,11 +75,12 @@ int main(int argc, char* argv[])
 		for(int i = 0; i <= nSubIntervals; ++i)
 		{
 			std::this_thread::sleep_for(subInterval);
-			//+TODO-C++17 - If the size of ifs is beyond the limit, flush it.
-			//if(fs::file_size(clp.source) > clp.maxSizeKB) {
-			//	ofs << ifs.rdbuf() << std::flush;
-			//	std::remove(clp.source.c_str());
-			//}
+
+			// If the size of ifs is beyond the limit, flush it
+			if(fs::file_size(clp.source) > clp.maxSizeKB) {
+				ofs << ifs.rdbuf() << std::flush;
+				std::remove(clp.source.c_str());
+			}
 		}
 	}
 
