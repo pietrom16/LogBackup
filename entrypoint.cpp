@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
 			// If the size of ifs is beyond the limit, flush it
 			if(fs::file_size(clp.source) > clp.maxSizeKB) {
 				ofs << ifs.rdbuf() << std::flush;
+				//+TODO-C++17 fs::resize_file(clp.source, 0); ifs.seekg(0);
 				std::remove(clp.source.c_str());
 			}
 		}
